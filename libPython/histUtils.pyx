@@ -30,7 +30,7 @@ def makePassFailHistograms( sample, flag, bindef, var ):
     #####################
 
     # For tree branches
-    cdef float pair_mass
+    cdef float TnP_mass
 
     # For the loop
     cdef int nbins = 0
@@ -59,6 +59,7 @@ def makePassFailHistograms( sample, flag, bindef, var ):
     ###############################
 
     tree = new TChain(sample.tree)
+    print 'Sample.tree = ',sample.tree
 
     for p in sample.path:
         print ' adding rootfile: ', p
@@ -86,7 +87,7 @@ def makePassFailHistograms( sample, flag, bindef, var ):
 
         cuts = bindef['bins'][ib]['cut']
         if sample.mcTruth :
-            cuts = '%s && mcTrue==1' % cuts
+            cuts = '%s' % cuts #cuts = '%s && mcTrue==1' % cuts
         if not sample.cut is None :
             cuts = '%s && %s' % (cuts,sample.cut)
 
@@ -114,7 +115,7 @@ def makePassFailHistograms( sample, flag, bindef, var ):
 
     # Find out with variables are used to activate the corresponding branches
     replace_patterns = ['&', '|', '-', 'cos(', 'sqrt(', 'fabs(', 'abs(', '(', ')', '>', '<', '=', '!', '*', '/']
-    branches = " ".join(cutBinList) + " pair_mass " + flag
+    branches = " ".join(cutBinList) + " TnP_mass " + flag
     for p in replace_patterns:
         branches = branches.replace(p, ' ')
 
@@ -128,7 +129,7 @@ def makePassFailHistograms( sample, flag, bindef, var ):
         tree.SetBranchStatus(br, 1)
 
     # Set adress of pair mass
-    tree.SetBranchAddress("pair_mass", <void*>&pair_mass)
+    tree.SetBranchAddress("TnP_mass", <void*>&TnP_mass)
 
     ################
     # Loop over Tree
@@ -150,9 +151,9 @@ def makePassFailHistograms( sample, flag, bindef, var ):
             weight = bin_formulas[bnidx].EvalInstance(0)
             if weight:
                 if flag_formula.EvalInstance(0):
-                    hPass[bnidx].Fill(pair_mass, weight)
+                    hPass[bnidx].Fill(TnP_mass, weight)
                 else:
-                    hFail[bnidx].Fill(pair_mass, weight)
+                    hFail[bnidx].Fill(TnP_mass, weight)
                 break
 
     #####################

@@ -123,7 +123,8 @@ def setTDRStyle():
   tdrStyle.SetAxisColor(1, "XYZ")
   tdrStyle.SetStripDecimals(True)
   tdrStyle.SetTickLength(0.03, "XYZ")
-  tdrStyle.SetNdivisions(510, "XYZ")
+  tdrStyle.SetNdivisions(510, "XYZ") #510
+  tdrStyle.SetNdivisions(505, "X") #510
   tdrStyle.SetPadTickX(1)  # To get tick marks on the opposite side of the frame
   tdrStyle.SetPadTickY(1)
 
