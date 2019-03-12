@@ -12,6 +12,10 @@ flags = {
     'passMultiIsoM'       : '(Probe_passMultiIsoM == 1 && Probe_isGenMatched == 1)',
     'passMultiIsoM2017'   : '(Probe_passMultiIsoM2017 == 1 && Probe_isGenMatched == 1)',
     'passMultiIsoM2017v2' : '(Probe_passMultiIsoM2017v2 == 1 && Probe_isGenMatched == 1)',
+    'passMiniIsoL'       :  '(Probe_passMiniIsoL == 1 && Probe_isGenMatched == 1)',
+    'passMiniIsoM'       :  '(Probe_passMiniIsoM == 1 && Probe_isGenMatched == 1)',
+    'passMiniIsoT'       :  '(Probe_passMiniIsoT == 1 && Probe_isGenMatched == 1)',
+    'passMiniIsoVT'      :  '(Probe_passMiniIsoVT == 1 && Probe_isGenMatched == 1)',
     'passRelIsoT'         : '(Probe_passRelIsoT == 1 && Probe_isGenMatched == 1)',
     }
 
