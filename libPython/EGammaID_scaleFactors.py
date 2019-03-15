@@ -15,8 +15,8 @@ tdrstyle.setTDRStyle()
 effiMin = 0.68
 effiMax = 1.07
 
-sfMin = 0.78
-sfMax = 1.12
+sfMin = 0.955# 0.78
+sfMax = 1.045 #1.12
 
 
 def isFloat( myFloat ):
@@ -112,19 +112,19 @@ def EffiGraph1D(effDataList, effMCList, sfList ,nameout, xAxis = 'pT', yAxis = '
     listOfTGraph2 = []
     listOfMC      = []
 
-    xMin = 10
-    xMax = 200
+    xMin = 20
+    xMax = 120
     if 'pT' in xAxis or 'pt' in xAxis:
         p1.SetLogx()
         p2.SetLogx()    
-        xMin = 10
-        xMax = 500
+        xMin = 20
+        xMax = 120
     elif 'vtx' in xAxis or 'Vtx' in xAxis or 'PV' in xAxis:
         xMin =  3
         xMax = 42
     elif 'eta' in xAxis or 'Eta' in xAxis:
-        xMin = -2.60
-        xMax = +2.60
+        xMin = 0.0
+        xMax = +2.40
     
     if 'abs' in xAxis or 'Abs' in xAxis:
         xMin = 0.0
@@ -134,7 +134,7 @@ def EffiGraph1D(effDataList, effMCList, sfList ,nameout, xAxis = 'pT', yAxis = '
     effiMax = effminmax[1]
 
     sfminmax =  findMinMax( sfList )
-    sfMin = sfminmax[0]
+#    sfMin = sfminmax[0]
 #    sfMin = 0.94
 #    sfMax = 1.02
 
@@ -166,7 +166,7 @@ def EffiGraph1D(effDataList, effMCList, sfList ,nameout, xAxis = 'pT', yAxis = '
         
         grBinsSF.GetHistogram().GetXaxis().SetTitleOffset(1)
         if 'eta' in xAxis or 'Eta' in xAxis:
-            grBinsSF.GetHistogram().GetXaxis().SetTitle("SuperCluster #eta")
+            grBinsSF.GetHistogram().GetXaxis().SetTitle("|#eta|")
         elif 'pt' in xAxis or 'pT' in xAxis:
             grBinsSF.GetHistogram().GetXaxis().SetTitle("p_{T}  [GeV]")  
         elif 'vtx' in xAxis or 'Vtx' in xAxis or 'PV' in xAxis:
@@ -265,8 +265,8 @@ def diagnosticErrorPlot( effgr, ierror, nameout ):
     h2_sfErrorAbs.SetMaximum(min(h2_sfErrorAbs.GetMaximum(),0.2))
     h2_sfErrorRel.SetMinimum(0)
     h2_sfErrorRel.SetMaximum(1)
-    h2_sfErrorAbs.SetTitle('e/#gamma absolute SF syst: %s ' % errorNames[ierror])
-    h2_sfErrorRel.SetTitle('e/#gamma relative SF syst: %s ' % errorNames[ierror])
+    h2_sfErrorAbs.SetTitle('#mu absolute SF syst: %s ' % errorNames[ierror])
+    h2_sfErrorRel.SetTitle('#mu relative SF syst: %s ' % errorNames[ierror])
     c2D_Err.cd(1)
     h2_sfErrorAbs.DrawCopy("colz TEXT45")
     c2D_Err.cd(2)
@@ -295,7 +295,7 @@ def doEGM_SFs(filein, lumi, axis = ['pT','eta'] ):
 
         if len(numbers) > 0 and isFloat(numbers[0]):
             etaKey = ( float(numbers[0]), float(numbers[1]) )
-            ptKey  = ( float(numbers[2]), min(500,float(numbers[3])) )
+            ptKey  = ( float(numbers[2]), min(120,float(numbers[3])) )
         
             myeff = efficiency(ptKey,etaKey,
                                float(numbers[4]),float(numbers[5]),float(numbers[6] ),float(numbers[7] ),
@@ -313,11 +313,10 @@ def doEGM_SFs(filein, lumi, axis = ['pT','eta'] ):
     print " ------------------------------- "
 
     customEtaBining = []
-    customEtaBining.append( (0.000,0.800))
-    customEtaBining.append( (0.800,1.444))
-    customEtaBining.append( (1.444,1.566))
-    customEtaBining.append( (1.566,2.000))
-    customEtaBining.append( (2.000,2.500))
+    customEtaBining.append( (0.000,0.900))
+    customEtaBining.append( (0.900,1.2))
+    customEtaBining.append( (1.2,2.1))
+    customEtaBining.append( (2.100,2.400))
 
 
     pdfout = nameOutBase + '_egammaPlots.pdf'
@@ -330,19 +329,21 @@ def doEGM_SFs(filein, lumi, axis = ['pT','eta'] ):
                  effGraph.pt_1DGraph_list( True ) , #SF
                  pdfout,
                  xAxis = axis[0], yAxis = axis[1] )
-#EffiGraph1D( effGraph.pt_1DGraph_list_customEtaBining(customEtaBining,False) , 
-#             effGraph.pt_1DGraph_list_customEtaBining(customEtaBining,True)   , False, pdfout )
-#    EffiGraph1D( effGraph.eta_1DGraph_list(False), effGraph.eta_1DGraph_list(True), True , pdfout )
+    #EffiGraph1D( effGraph.pt_1DGraph_list_customEtaBining(customEtaBining,False) , 
+    #             effGraph.pt_1DGraph_list_customEtaBining(customEtaBining,True)   , False, pdfout )
+    #EffiGraph1D( effGraph.eta_1DGraph_list(False), effGraph.eta_1DGraph_list(True), True , pdfout )
     listOfSF1D = EffiGraph1D( effGraph.eta_1DGraph_list( typeGR =  0 ) , # eff Data
                               effGraph.eta_1DGraph_list( typeGR = -1 ) , # eff MC
                               effGraph.eta_1DGraph_list( typeGR = +1 ) , # SF
                               pdfout, 
                               xAxis = axis[1], yAxis = axis[0] )
 
+    print 'passing c2D.cd(1)...'
     h2EffData = effGraph.ptEtaScaleFactor_2DHisto(-3)
     h2EffMC   = effGraph.ptEtaScaleFactor_2DHisto(-2)
     h2SF      = effGraph.ptEtaScaleFactor_2DHisto(-1)
     h2Error   = effGraph.ptEtaScaleFactor_2DHisto( 0)  ## only error bars
+    print 'paso...'
 
     rt.gStyle.SetPalette(1)
     rt.gStyle.SetPaintTextFormat('1.3f');
@@ -359,7 +360,6 @@ def doEGM_SFs(filein, lumi, axis = ['pT','eta'] ):
     c2D.GetPad(1).SetLogy()
     c2D.GetPad(2).SetLogy()
     
-
     c2D.cd(1)
     dmin = 1.0 - h2SF.GetMinimum()
     dmax = h2SF.GetMaximum() - 1.0
@@ -375,7 +375,6 @@ def doEGM_SFs(filein, lumi, axis = ['pT','eta'] ):
 
     c2D.Print( pdfout )
 
-
     rootout = rt.TFile(nameOutBase + '_EGM2D.root','recreate')
     rootout.cd()
     h2SF.Write('EGamma_SF2D',rt.TObject.kOverwrite)
@@ -385,8 +384,8 @@ def doEGM_SFs(filein, lumi, axis = ['pT','eta'] ):
         listOfSF1D[igr].Write( 'grSF1D_%d' % igr, rt.TObject.kOverwrite)
     rootout.Close()
 
-    for isyst in range(len(efficiency.getSystematicNames())):
-        diagnosticErrorPlot( effGraph, isyst, pdfout )
+    #for isyst in range(len(efficiency.getSystematicNames())):
+    #    diagnosticErrorPlot( effGraph, isyst, pdfout )
 
     cDummy.Print( pdfout + "]" )
 

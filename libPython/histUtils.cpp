@@ -1326,11 +1326,11 @@ static const char __pyx_k_histFile[] = "histFile";
 static const char __pyx_k_outcount[] = "outcount";
 static const char __pyx_k_is_number[] = "is_number";
 static const char __pyx_k_maxWeight[] = "maxWeight";
-static const char __pyx_k_pair_mass[] = " pair_mass ";
+static const char __pyx_k_TnP_mass[] = " TnP_mass ";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_cutBinList[] = "cutBinList";
-static const char __pyx_k_s_mcTrue_1[] = "%s && mcTrue==1";
-static const char __pyx_k_pair_mass_2[] = "pair_mass";
+static const char __pyx_k_s_mcTrue_1[] = "%s"; //"%s && mcTrue==1";
+static const char __pyx_k_TnP_mass_2[] = "TnP_mass";
 static const char __pyx_k_s_Selection[] = "%s_Selection";
 static const char __pyx_k_s_s_f_s_1_0[] = "( %s ) * (%s < %f ? %s : 1.0 )";
 static const char __pyx_k_bin_formulas[] = "bin_formulas";
@@ -1417,8 +1417,8 @@ static PyObject *__pyx_n_s_nevts;
 static PyObject *__pyx_n_s_outcount;
 static PyObject *__pyx_n_s_outfile;
 static PyObject *__pyx_n_s_p;
-static PyObject *__pyx_kp_s_pair_mass;
-static PyObject *__pyx_n_s_pair_mass_2;
+static PyObject *__pyx_kp_s_TnP_mass;
+static PyObject *__pyx_n_s_TnP_mass_2;
 static PyObject *__pyx_n_s_passI;
 static PyObject *__pyx_n_s_path;
 static PyObject *__pyx_n_s_print;
@@ -1781,7 +1781,7 @@ static PyObject *__pyx_pw_9libPython_9histUtils_3makePassFailHistograms(PyObject
 }
 
 static PyObject *__pyx_pf_9libPython_9histUtils_2makePassFailHistograms(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_sample, PyObject *__pyx_v_flag, PyObject *__pyx_v_bindef, PyObject *__pyx_v_var) {
-  float __pyx_v_pair_mass;
+  float __pyx_v_TnP_mass;
   int __pyx_v_nbins;
   int __pyx_v_nevts;
   int __pyx_v_frac_of_nevts;
@@ -2718,7 +2718,7 @@ static PyObject *__pyx_pf_9libPython_9histUtils_2makePassFailHistograms(CYTHON_U
  * 
  *     # Find out with variables are used to activate the corresponding branches
  *     replace_patterns = ['&', '|', '-', 'cos(', 'sqrt(', 'fabs(', 'abs(', '(', ')', '>', '<', '=', '!', '*', '/']             # <<<<<<<<<<<<<<
- *     branches = " ".join(cutBinList) + " pair_mass " + flag
+ *     branches = " ".join(cutBinList) + " TnP_mass " + flag
  *     for p in replace_patterns:
  */
   __pyx_t_1 = PyList_New(15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
@@ -2774,13 +2774,13 @@ static PyObject *__pyx_pf_9libPython_9histUtils_2makePassFailHistograms(CYTHON_U
   /* "libPython/histUtils.pyx":117
  *     # Find out with variables are used to activate the corresponding branches
  *     replace_patterns = ['&', '|', '-', 'cos(', 'sqrt(', 'fabs(', 'abs(', '(', ')', '>', '<', '=', '!', '*', '/']
- *     branches = " ".join(cutBinList) + " pair_mass " + flag             # <<<<<<<<<<<<<<
+ *     branches = " ".join(cutBinList) + " TnP_mass " + flag             # <<<<<<<<<<<<<<
  *     for p in replace_patterns:
  *         branches = branches.replace(p, ' ')
  */
   __pyx_t_1 = __Pyx_PyString_Join(__pyx_kp_s__15, __pyx_v_cutBinList); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = PyNumber_Add(__pyx_t_1, __pyx_kp_s_pair_mass); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_7 = PyNumber_Add(__pyx_t_1, __pyx_kp_s_TnP_mass); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = PyNumber_Add(__pyx_t_7, __pyx_v_flag); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
@@ -2791,7 +2791,7 @@ static PyObject *__pyx_pf_9libPython_9histUtils_2makePassFailHistograms(CYTHON_U
 
   /* "libPython/histUtils.pyx":118
  *     replace_patterns = ['&', '|', '-', 'cos(', 'sqrt(', 'fabs(', 'abs(', '(', ')', '>', '<', '=', '!', '*', '/']
- *     branches = " ".join(cutBinList) + " pair_mass " + flag
+ *     branches = " ".join(cutBinList) + " TnP_mass " + flag
  *     for p in replace_patterns:             # <<<<<<<<<<<<<<
  *         branches = branches.replace(p, ' ')
  * 
@@ -2809,7 +2809,7 @@ static PyObject *__pyx_pf_9libPython_9histUtils_2makePassFailHistograms(CYTHON_U
     __pyx_t_7 = 0;
 
     /* "libPython/histUtils.pyx":119
- *     branches = " ".join(cutBinList) + " pair_mass " + flag
+ *     branches = " ".join(cutBinList) + " TnP_mass " + flag
  *     for p in replace_patterns:
  *         branches = branches.replace(p, ' ')             # <<<<<<<<<<<<<<
  * 
@@ -2867,7 +2867,7 @@ static PyObject *__pyx_pf_9libPython_9histUtils_2makePassFailHistograms(CYTHON_U
 
     /* "libPython/histUtils.pyx":118
  *     replace_patterns = ['&', '|', '-', 'cos(', 'sqrt(', 'fabs(', 'abs(', '(', ')', '>', '<', '=', '!', '*', '/']
- *     branches = " ".join(cutBinList) + " pair_mass " + flag
+ *     branches = " ".join(cutBinList) + " TnP_mass " + flag
  *     for p in replace_patterns:             # <<<<<<<<<<<<<<
  *         branches = branches.replace(p, ' ')
  * 
@@ -3102,11 +3102,11 @@ static PyObject *__pyx_pf_9libPython_9histUtils_2makePassFailHistograms(CYTHON_U
   /* "libPython/histUtils.pyx":131
  * 
  *     # Set adress of pair mass
- *     tree.SetBranchAddress("pair_mass", <void*>&pair_mass)             # <<<<<<<<<<<<<<
+ *     tree.SetBranchAddress("TnP_mass", <void*>&TnP_mass)             # <<<<<<<<<<<<<<
  * 
  *     ################
  */
-  __pyx_v_tree->SetBranchAddress(((const char *)"pair_mass"), ((void *)(&__pyx_v_pair_mass)));
+  __pyx_v_tree->SetBranchAddress(((const char *)"TnP_mass"), ((void *)(&__pyx_v_TnP_mass)));
 
   /* "libPython/histUtils.pyx":137
  *     ################
@@ -3232,7 +3232,7 @@ static PyObject *__pyx_pf_9libPython_9histUtils_2makePassFailHistograms(CYTHON_U
  *             weight = bin_formulas[bnidx].EvalInstance(0)
  *             if weight:             # <<<<<<<<<<<<<<
  *                 if flag_formula.EvalInstance(0):
- *                     hPass[bnidx].Fill(pair_mass, weight)
+ *                     hPass[bnidx].Fill(TnP_mass, weight)
  */
       __pyx_t_9 = (__pyx_v_weight != 0);
       if (__pyx_t_9) {
@@ -3241,7 +3241,7 @@ static PyObject *__pyx_pf_9libPython_9histUtils_2makePassFailHistograms(CYTHON_U
  *             weight = bin_formulas[bnidx].EvalInstance(0)
  *             if weight:
  *                 if flag_formula.EvalInstance(0):             # <<<<<<<<<<<<<<
- *                     hPass[bnidx].Fill(pair_mass, weight)
+ *                     hPass[bnidx].Fill(TnP_mass, weight)
  *                 else:
  */
         __pyx_t_9 = (__pyx_v_flag_formula->EvalInstance(0) != 0);
@@ -3250,37 +3250,37 @@ static PyObject *__pyx_pf_9libPython_9histUtils_2makePassFailHistograms(CYTHON_U
           /* "libPython/histUtils.pyx":153
  *             if weight:
  *                 if flag_formula.EvalInstance(0):
- *                     hPass[bnidx].Fill(pair_mass, weight)             # <<<<<<<<<<<<<<
+ *                     hPass[bnidx].Fill(TnP_mass, weight)             # <<<<<<<<<<<<<<
  *                 else:
- *                     hFail[bnidx].Fill(pair_mass, weight)
+ *                     hFail[bnidx].Fill(TnP_mass, weight)
  */
-          (__pyx_v_hPass[__pyx_v_bnidx])->Fill(__pyx_v_pair_mass, __pyx_v_weight);
+          (__pyx_v_hPass[__pyx_v_bnidx])->Fill(__pyx_v_TnP_mass, __pyx_v_weight);
 
           /* "libPython/histUtils.pyx":152
  *             weight = bin_formulas[bnidx].EvalInstance(0)
  *             if weight:
  *                 if flag_formula.EvalInstance(0):             # <<<<<<<<<<<<<<
- *                     hPass[bnidx].Fill(pair_mass, weight)
+ *                     hPass[bnidx].Fill(TnP_mass, weight)
  *                 else:
  */
           goto __pyx_L29;
         }
 
         /* "libPython/histUtils.pyx":155
- *                     hPass[bnidx].Fill(pair_mass, weight)
+ *                     hPass[bnidx].Fill(TnP_mass, weight)
  *                 else:
- *                     hFail[bnidx].Fill(pair_mass, weight)             # <<<<<<<<<<<<<<
+ *                     hFail[bnidx].Fill(TnP_mass, weight)             # <<<<<<<<<<<<<<
  *                 break
  * 
  */
         /*else*/ {
-          (__pyx_v_hFail[__pyx_v_bnidx])->Fill(__pyx_v_pair_mass, __pyx_v_weight);
+          (__pyx_v_hFail[__pyx_v_bnidx])->Fill(__pyx_v_TnP_mass, __pyx_v_weight);
         }
         __pyx_L29:;
 
         /* "libPython/histUtils.pyx":156
  *                 else:
- *                     hFail[bnidx].Fill(pair_mass, weight)
+ *                     hFail[bnidx].Fill(TnP_mass, weight)
  *                 break             # <<<<<<<<<<<<<<
  * 
  *     #####################
@@ -3292,7 +3292,7 @@ static PyObject *__pyx_pf_9libPython_9histUtils_2makePassFailHistograms(CYTHON_U
  *             weight = bin_formulas[bnidx].EvalInstance(0)
  *             if weight:             # <<<<<<<<<<<<<<
  *                 if flag_formula.EvalInstance(0):
- *                     hPass[bnidx].Fill(pair_mass, weight)
+ *                     hPass[bnidx].Fill(TnP_mass, weight)
  */
       }
     }
@@ -3675,8 +3675,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_outcount, __pyx_k_outcount, sizeof(__pyx_k_outcount), 0, 0, 1, 1},
   {&__pyx_n_s_outfile, __pyx_k_outfile, sizeof(__pyx_k_outfile), 0, 0, 1, 1},
   {&__pyx_n_s_p, __pyx_k_p, sizeof(__pyx_k_p), 0, 0, 1, 1},
-  {&__pyx_kp_s_pair_mass, __pyx_k_pair_mass, sizeof(__pyx_k_pair_mass), 0, 0, 1, 0},
-  {&__pyx_n_s_pair_mass_2, __pyx_k_pair_mass_2, sizeof(__pyx_k_pair_mass_2), 0, 0, 1, 1},
+  {&__pyx_kp_s_TnP_mass, __pyx_k_TnP_mass, sizeof(__pyx_k_TnP_mass), 0, 0, 1, 0},
+  {&__pyx_n_s_TnP_mass_2, __pyx_k_TnP_mass_2, sizeof(__pyx_k_TnP_mass_2), 0, 0, 1, 1},
   {&__pyx_n_s_passI, __pyx_k_passI, sizeof(__pyx_k_passI), 0, 0, 1, 1},
   {&__pyx_n_s_path, __pyx_k_path, sizeof(__pyx_k_path), 0, 0, 1, 1},
   {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
@@ -3775,7 +3775,7 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *     #####################
  */
-  __pyx_tuple__21 = PyTuple_Pack(37, __pyx_n_s_sample, __pyx_n_s_flag, __pyx_n_s_bindef, __pyx_n_s_var, __pyx_n_s_pair_mass_2, __pyx_n_s_nbins, __pyx_n_s_nevts, __pyx_n_s_frac_of_nevts, __pyx_n_s_index, __pyx_n_s_bnidx, __pyx_n_s_outcount, __pyx_n_s_weight, __pyx_n_s_tree, __pyx_n_s_flag_formula, __pyx_n_s_bin_formulas, __pyx_n_s_hPass, __pyx_n_s_hFail, __pyx_n_s_formulas_list, __pyx_n_s_epass, __pyx_n_s_efail, __pyx_n_s_p, __pyx_n_s_outfile, __pyx_n_s_cutBinList, __pyx_n_s_ib, __pyx_n_s_cuts, __pyx_n_s_cutBin, __pyx_n_s_replace_patterns, __pyx_n_s_branches, __pyx_n_s_br, __pyx_n_s_bin1, __pyx_n_s_bin2, __pyx_n_s_passI, __pyx_n_s_failI, __pyx_n_s_eff, __pyx_n_s_e_eff, __pyx_n_s_itot, __pyx_n_s_x); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_tuple__21 = PyTuple_Pack(37, __pyx_n_s_sample, __pyx_n_s_flag, __pyx_n_s_bindef, __pyx_n_s_var, __pyx_n_s_TnP_mass_2, __pyx_n_s_nbins, __pyx_n_s_nevts, __pyx_n_s_frac_of_nevts, __pyx_n_s_index, __pyx_n_s_bnidx, __pyx_n_s_outcount, __pyx_n_s_weight, __pyx_n_s_tree, __pyx_n_s_flag_formula, __pyx_n_s_bin_formulas, __pyx_n_s_hPass, __pyx_n_s_hFail, __pyx_n_s_formulas_list, __pyx_n_s_epass, __pyx_n_s_efail, __pyx_n_s_p, __pyx_n_s_outfile, __pyx_n_s_cutBinList, __pyx_n_s_ib, __pyx_n_s_cuts, __pyx_n_s_cutBin, __pyx_n_s_replace_patterns, __pyx_n_s_branches, __pyx_n_s_br, __pyx_n_s_bin1, __pyx_n_s_bin2, __pyx_n_s_passI, __pyx_n_s_failI, __pyx_n_s_eff, __pyx_n_s_e_eff, __pyx_n_s_itot, __pyx_n_s_x); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__21);
   __Pyx_GIVEREF(__pyx_tuple__21);
   __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(4, 0, 37, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_histUtils_pyx, __pyx_n_s_makePassFailHistograms, 26, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(0, 26, __pyx_L1_error)

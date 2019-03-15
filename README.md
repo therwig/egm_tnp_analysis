@@ -3,37 +3,25 @@
 ## General note on installation
 
 This code can in principle run on your laptop but you need ROOT 6.10 or higher and RooFit installed to use some advanced features when creating histograms.
-The easiest thing to do is to set the environement in a 9_4_X release:
+The easiest thing to do is to set the environement in a 10_1_X release:
 
->cmsrel CMSSW_9_4_0
+>cmsrel CMSSW_10_1_1
 
->cd CMSSW_9_4_0/src
+>cd CMSSW_10_1_1/src
 
 >cmsenv
 
 
 ## Install stable branch
 
->git clone -b egm_tnp_Moriond18_v3.0 git@github.com:michelif/egm_tnp_analysis.git
+>git clone -b  egm_tnp_Prompt2018_v2_15pOfStat git@github.com:lsoffi/egm_tnp_analysis.git
 
-if you  want to run the old tnp code which runs also with ROOT < 6.10 you can get this branch: 
+> source etc/scripts/setup_ROOT6.10.sh
 
->git clone -b egm_tnp_Moriond18_v2.0 git@github.com:lsoffi/egm_tnp_analysis.git
-
-On lxplus you need to setup the environment: 
-> cd egm_tnp_analysis
-
-> source etc/scripts/setup94.sh
-
-or if you got the branch for ROOT < 6.10:
-
-> source etc/scripts/setup.sh
 
 Compile with:
 
 >make
-
-The compile step is not needed for the branch for ROOT < 6.10:
 
 
 ## Quick description
@@ -162,9 +150,10 @@ to the fitter. One can handle complex flags with a cut string (root cut string):
 
 ##  Update PU weights 
 
-1. Pileup files have to be computed with: python etc/scripts/pureweight.py
+1.Pileup files have to be computed with: python etc/scripts/pureweight.py
 
-Here one has to update the name of the directory whre the files will be located and the corresponding names.
+Here one has to update the name of the directory whre the files will be located and the corresponding names. If needed you have to recompute the data PU distributions
+and copying them to eos before doing this step, see point 3.
 
 
 2.This pyhton uses the following: libPython/puReweighter.py.

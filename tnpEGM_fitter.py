@@ -1,4 +1,3 @@
-
 ### python specific import
 import argparse
 import os
@@ -84,7 +83,7 @@ tnpBins = pickle.load( open( '%s/bining.pkl'%(outputDirectory),'rb') )
 for s in tnpConf.samplesDef.keys():
     sample =  tnpConf.samplesDef[s]
     if sample is None: continue
-    setattr( sample, 'tree'     ,'%s/fitter_tree' % tnpConf.tnpTreeDir )
+    setattr( sample, 'tree'     ,'Events' ) # %s/tnpEGM_fitter.py:
     setattr( sample, 'histFile' , '%s/%s_%s.root' % ( outputDirectory , sample.name, args.flag ) )
 
 
@@ -98,9 +97,9 @@ if args.createHists:
         if sampleType == args.sample or args.sample == 'all' :
             print 'creating histogram for sample '
             sample.dump()
-            var = { 'name' : 'pair_mass', 'nbins' : 80, 'min' : 50, 'max': 130 }
+            var = { 'name' : 'TnP_mass', 'nbins' : 80, 'min' : 50, 'max': 130 }
             if sample.mcTruth:
-                var = { 'name' : 'pair_mass', 'nbins' : 80, 'min' : 50, 'max': 130 }
+                var = { 'name' : 'TnP_mass', 'nbins' : 80, 'min' : 50, 'max': 130 }
             tnpHist.makePassFailHistograms( sample, tnpConf.flags[args.flag], tnpBins, var )
 
     sys.exit(0)
