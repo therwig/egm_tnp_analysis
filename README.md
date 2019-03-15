@@ -1,4 +1,10 @@
-# egm_tnp_analysis
+# Muon SF derivation with the EGamma POG fitter
+
+The config file to produce muon efficiencies is:
+
+    https://github.com/Oviedo-PAF/egm_tnp_analysis/blob/master/etc/config/settings_muo.py
+
+All the instructions below are the ones from the EGamma original code and are mostly the same as for calculating muon efficiencies. 
 
 ## General note on installation
 
