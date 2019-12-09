@@ -29,7 +29,7 @@ public:
   tnpFitter( TH1 *hPass, TH1 *hFail, std::string histname  );
   ~tnpFitter(void) {if( _work != 0 ) delete _work; }
   void setZLineShapes(TH1 *hZPass, TH1 *hZFail );
-  void setWorkspace(std::vector<std::string>);
+  void setWorkspace(std::vector<std::string>, bool);
   void setOutputFile(TFile *fOut ) {_fOut = fOut;}
   void fits(bool mcTruth,std::string title = "");
   void useMinos(bool minos = true) {_useMinos = minos;}
@@ -45,10 +45,11 @@ private:
   double _nTotP, _nTotF;
   bool _useMinos;
   bool _fixSigmaFtoSigmaP;
+  bool _useNoMCTemplate;
   double _xFitMin,_xFitMax;
 };
 
-tnpFitter::tnpFitter(TFile *filein, std::string histname   ) : _useMinos(false),_fixSigmaFtoSigmaP(false) {
+tnpFitter::tnpFitter(TFile *filein, std::string histname   ) : _useMinos(false),_fixSigmaFtoSigmaP(false),_useNoMCTemplate(false) {
   RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
   _histname_base = histname;  
 
@@ -75,7 +76,7 @@ tnpFitter::tnpFitter(TFile *filein, std::string histname   ) : _useMinos(false),
   _xFitMax = 120;
 }
 
-tnpFitter::tnpFitter(TH1 *hPass, TH1 *hFail, std::string histname  ) : _useMinos(false),_fixSigmaFtoSigmaP(false) {
+tnpFitter::tnpFitter(TH1 *hPass, TH1 *hFail, std::string histname  ) : _useMinos(false),_fixSigmaFtoSigmaP(false),_useNoMCTemplate(false) {
   RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
   _histname_base = histname;
   
@@ -109,21 +110,35 @@ void tnpFitter::setZLineShapes(TH1 *hZPass, TH1 *hZFail ) {
   _work->import(rooFail) ;  
 }
 
-void tnpFitter::setWorkspace(std::vector<std::string> workspace) {
+void tnpFitter::setWorkspace(std::vector<std::string> workspace, bool useNoMCTemplate = 0) {
   for( unsigned icom = 0 ; icom < workspace.size(); ++icom ) {
     _work->factory(workspace[icom].c_str());
   }
 
-  _work->factory("HistPdf::sigPhysPass(x,hGenZPass)");
-  _work->factory("HistPdf::sigPhysFail(x,hGenZFail)");
-  _work->factory("FCONV::sigPass(x, sigPhysPass , sigResPass)");
-  _work->factory("FCONV::sigFail(x, sigPhysFail , sigResFail)");
-  _work->factory(TString::Format("nSigP[%f,0.5,%f]",_nTotP*0.9,_nTotP*1.5));
-  _work->factory(TString::Format("nBkgP[%f,0.5,%f]",_nTotP*0.1,_nTotP*1.5));
-  _work->factory(TString::Format("nSigF[%f,0.5,%f]",_nTotF*0.9,_nTotF*1.5));
-  _work->factory(TString::Format("nBkgF[%f,0.5,%f]",_nTotF*0.1,_nTotF*1.5));
-  _work->factory("SUM::pdfPass(nSigP*sigPass,nBkgP*bkgPass)");
-  _work->factory("SUM::pdfFail(nSigF*sigFail,nBkgF*bkgFail)");
+  if(useNoMCTemplate) _useNoMCTemplate = true;
+
+  if( _useNoMCTemplate ) {
+	  _work->factory("SUM::sigPass(vFracPass[0.8,0.3,1]*sigResPass1, sigResPass2)");
+	  _work->factory("SUM::sigFail(vFracFail[0.8,0.3,1]*sigResFail1, sigResFail2)");
+	  _work->factory(TString::Format("nSigP[%f,0.5,%f]",_nTotP*0.9,_nTotP*1.5));
+	  _work->factory(TString::Format("nBkgP[%f,0.5,%f]",_nTotP*0.1,_nTotP*1.5));
+	  _work->factory(TString::Format("nSigF[%f,0.5,%f]",_nTotF*0.9,_nTotF*1.5));
+	  _work->factory(TString::Format("nBkgF[%f,0.5,%f]",_nTotF*0.1,_nTotF*1.5));
+	  _work->factory("SUM::pdfPass(nSigP*sigPass,nBkgP*bkgPass)");
+	  _work->factory("SUM::pdfFail(nSigF*sigFail,nBkgF*bkgFail)");
+  }
+  else {
+	  _work->factory("HistPdf::sigPhysPass(x,hGenZPass)");
+	  _work->factory("HistPdf::sigPhysFail(x,hGenZFail)");
+	  _work->factory("FCONV::sigPass(x, sigPhysPass , sigResPass)");
+	  _work->factory("FCONV::sigFail(x, sigPhysFail , sigResFail)");
+	  _work->factory(TString::Format("nSigP[%f,0.5,%f]",_nTotP*0.9,_nTotP*1.5));
+	  _work->factory(TString::Format("nBkgP[%f,0.5,%f]",_nTotP*0.1,_nTotP*1.5));
+	  _work->factory(TString::Format("nSigF[%f,0.5,%f]",_nTotF*0.9,_nTotF*1.5));
+	  _work->factory(TString::Format("nBkgF[%f,0.5,%f]",_nTotF*0.1,_nTotF*1.5));
+	  _work->factory("SUM::pdfPass(nSigP*sigPass,nBkgP*bkgPass)");
+	  _work->factory("SUM::pdfFail(nSigF*sigFail,nBkgF*bkgFail)");
+  }
   _work->Print();			         
 }
 
@@ -161,8 +176,10 @@ void tnpFitter::fits(bool mcTruth,string title) {
     _work->var("sigmaF")->setConstant();
   }
 
-  _work->var("sigmaF")->setVal(_work->var("sigmaP")->getVal());
-  _work->var("sigmaF")->setRange(0.8* _work->var("sigmaP")->getVal(), 3.0* _work->var("sigmaP")->getVal());
+  if(!_useNoMCTemplate) {
+	  _work->var("sigmaF")->setVal(_work->var("sigmaP")->getVal());
+	  //_work->var("sigmaF")->setRange(0.8* _work->var("sigmaP")->getVal(), 3.0* _work->var("sigmaP")->getVal());
+  }
   RooFitResult* resFail = pdfFail->fitTo(*_work->data("hFail"),Minos(_useMinos),SumW2Error(kTRUE),Save(),Range("fitMassRange"));
   //RooFitResult* resFail = pdfFail->fitTo(*_work->data("hFail"),Minos(_useMinos),SumW2Error(kTRUE),Save());
 
