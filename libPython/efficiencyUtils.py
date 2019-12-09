@@ -276,7 +276,6 @@ class efficiencyList:
         #h2dd = rt.TH2F(hname,htitle,xbinsTab.size-1,xbinsTab,ybinsTab.size-1,ybinsTab)
         h2 = rt.TH2F(hname,htitle,len(xbinsTab)-1,xbinsTab,len(ybinsTab)-1,ybinsTab)
 
-        print 'Llega!!!'
         ## init histogram efficiencies and errors to 100%
         for ix in range(1,h2.GetXaxis().GetNbins()+1):
             for iy in range(1,h2.GetYaxis().GetNbins()+1):
@@ -290,7 +289,7 @@ class efficiencyList:
                     if h2.GetYaxis().GetBinLowEdge(iy) < ptBin[0] or h2.GetYaxis().GetBinUpEdge(iy) > ptBin[1]:
                         continue
                     for etaBin in self.effList[ptBin].keys():
-                        if h2.GetXaxis().GetBinLowEdge(ix) < etaBin[0] or h2.GetXaxis().GetBinUpEdge(ix) > etaBin[1]:
+                        if round(h2.GetXaxis().GetBinLowEdge(ix),4) < etaBin[0] or round(h2.GetXaxis().GetBinUpEdge(ix),4) > etaBin[1]:
                             continue
 
                         ## average MC efficiency

@@ -15,8 +15,8 @@ tdrstyle.setTDRStyle()
 effiMin = 0.68
 effiMax = 1.07
 
-sfMin = 0.955# 0.78
-sfMax = 1.045 #1.12
+sfMin = 0.85 # 0.78
+sfMax = 1.15 #1.12
 
 
 def isFloat( myFloat ):
@@ -47,32 +47,32 @@ def findMinMax( effis ):
             if eff['val'] + eff['err'] > maxi:
                 maxi = eff['val'] + eff['err']
 
-    if mini > 0.18 and mini < 0.28:
-        mini = 0.18
-    if mini > 0.28 and mini < 0.38:
-        mini = 0.28
-    if mini > 0.38 and mini < 0.48:
-        mini = 0.38
-    if mini > 0.48 and mini < 0.58:
-        mini = 0.48
-    if mini > 0.58 and mini < 0.68:
-        mini = 0.58
-    if mini > 0.68 and mini < 0.78:
-        mini = 0.68
-    if mini > 0.78 and mini < 0.88:
-        mini = 0.78
-    if mini > 0.88:
-        mini = 0.88
-    if mini > 0.92:
-        mini = 0.92
+    if mini > 0.1 and mini < 0.2:
+        mini = 0.1
+    if mini > 0.2 and mini < 0.3:
+        mini = 0.2
+    if mini > 0.3 and mini < 0.4:
+        mini = 0.3
+    if mini > 0.4 and mini < 0.5:
+        mini = 0.4
+    if mini > 0.5 and mini < 0.6:
+        mini = 0.5
+    if mini > 0.6 and mini < 0.7:
+        mini = 0.6
+    if mini > 0.7 and mini < 0.8:
+        mini = 0.7
+    if mini > 0.8:
+        mini = 0.8
+    if mini > 0.9:
+        mini = 0.9
 
         
     if  maxi > 0.95:
-        maxi = 1.17        
-    elif maxi < 0.87:
-        maxi = 0.87
+        maxi = 1.1        
+    elif maxi < 0.8:
+        maxi = 0.8
     else:
-        maxi = 1.07
+        maxi = 1.05
 
     if maxi-mini > 0.5:
         maxi = maxi + 0.2
@@ -112,13 +112,13 @@ def EffiGraph1D(effDataList, effMCList, sfList ,nameout, xAxis = 'pT', yAxis = '
     listOfTGraph2 = []
     listOfMC      = []
 
-    xMin = 20
-    xMax = 120
+    xMin = 3.5
+    xMax = 30
     if 'pT' in xAxis or 'pt' in xAxis:
-        p1.SetLogx()
-        p2.SetLogx()    
-        xMin = 20
-        xMax = 120
+        #p1.SetLogx()
+        #p2.SetLogx()    
+        xMin = 3.5
+        xMax = 30
     elif 'vtx' in xAxis or 'Vtx' in xAxis or 'PV' in xAxis:
         xMin =  3
         xMax = 42
@@ -134,9 +134,8 @@ def EffiGraph1D(effDataList, effMCList, sfList ,nameout, xAxis = 'pT', yAxis = '
     effiMax = effminmax[1]
 
     sfminmax =  findMinMax( sfList )
-#    sfMin = sfminmax[0]
-#    sfMin = 0.94
-#    sfMax = 1.02
+    sfMin = sfminmax[0]
+    sfMax = sfminmax[1]
 
     for key in sorted(effDataList.keys()):
         grBinsEffData = effUtil.makeTGraphFromList(effDataList[key], 'min', 'max')
@@ -265,8 +264,8 @@ def diagnosticErrorPlot( effgr, ierror, nameout ):
     h2_sfErrorAbs.SetMaximum(min(h2_sfErrorAbs.GetMaximum(),0.2))
     h2_sfErrorRel.SetMinimum(0)
     h2_sfErrorRel.SetMaximum(1)
-    h2_sfErrorAbs.SetTitle('#mu absolute SF syst: %s ' % errorNames[ierror])
-    h2_sfErrorRel.SetTitle('#mu relative SF syst: %s ' % errorNames[ierror])
+    h2_sfErrorAbs.SetTitle('lepton absolute SF syst: %s ' % errorNames[ierror])
+    h2_sfErrorRel.SetTitle('lepton relative SF syst: %s ' % errorNames[ierror])
     c2D_Err.cd(1)
     h2_sfErrorAbs.DrawCopy("colz TEXT45")
     c2D_Err.cd(2)
@@ -295,7 +294,7 @@ def doEGM_SFs(filein, lumi, axis = ['pT','eta'] ):
 
         if len(numbers) > 0 and isFloat(numbers[0]):
             etaKey = ( float(numbers[0]), float(numbers[1]) )
-            ptKey  = ( float(numbers[2]), min(120,float(numbers[3])) )
+            ptKey  = ( float(numbers[2]), min(30,float(numbers[3])) )
         
             myeff = efficiency(ptKey,etaKey,
                                float(numbers[4]),float(numbers[5]),float(numbers[6] ),float(numbers[7] ),
@@ -338,12 +337,10 @@ def doEGM_SFs(filein, lumi, axis = ['pT','eta'] ):
                               pdfout, 
                               xAxis = axis[1], yAxis = axis[0] )
 
-    print 'passing c2D.cd(1)...'
     h2EffData = effGraph.ptEtaScaleFactor_2DHisto(-3)
     h2EffMC   = effGraph.ptEtaScaleFactor_2DHisto(-2)
     h2SF      = effGraph.ptEtaScaleFactor_2DHisto(-1)
     h2Error   = effGraph.ptEtaScaleFactor_2DHisto( 0)  ## only error bars
-    print 'paso...'
 
     rt.gStyle.SetPalette(1)
     rt.gStyle.SetPaintTextFormat('1.3f');
