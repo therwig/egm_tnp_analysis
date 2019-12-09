@@ -21,6 +21,8 @@ parser.add_argument('--iBin'       , dest = 'binNumber'   , type = int,  default
 parser.add_argument('--flag'       , default = None       , help ='WP to test')
 parser.add_argument('settings'     , default = None       , help = 'setting file [mandatory]')
 
+parser.add_argument('--doublePeak' , action='store_true'  , help = 'signal model fit for double peaks') # double peak fits do not use MC templates
+
 
 args = parser.parse_args()
 
@@ -122,9 +124,9 @@ for s in tnpConf.samplesDef.keys():
     sample =  tnpConf.samplesDef[s]
     if sample is None: continue
     setattr( sample, 'mcRef'     , sampleMC )
-    setattr( sample, 'nominalFit', '%s/%s_%s.nominalFit.root' % ( outputDirectory , sample.name, args.flag ) )
-    setattr( sample, 'altSigFit' , '%s/%s_%s.altSigFit.root'  % ( outputDirectory , sample.name, args.flag ) )
-    setattr( sample, 'altBkgFit' , '%s/%s_%s.altBkgFit.root'  % ( outputDirectory , sample.name, args.flag ) )
+    setattr( sample, 'nominalFit', '%s/%s_%s.nominalFit.root' % ( outputDirectory , sample.name+".doublePeak" if args.doublePeak else sample.name, args.flag ) )
+    setattr( sample, 'altSigFit' , '%s/%s_%s.altSigFit.root'  % ( outputDirectory , sample.name+".doublePeak" if args.doublePeak else sample.name, args.flag ) )
+    setattr( sample, 'altBkgFit' , '%s/%s_%s.altBkgFit.root'  % ( outputDirectory , sample.name+".doublePeak" if args.doublePeak else sample.name, args.flag ) )
 
 
 
@@ -136,12 +138,20 @@ if  args.doFit:
     sampleToFit.dump()
     for ib in range(len(tnpBins['bins'])):
         if (args.binNumber >= 0 and ib == args.binNumber) or args.binNumber < 0:
-            if args.altSig:                 
-                tnpRoot.histFitterAltSig(  sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParAltSigFit )
-            elif args.altBkg:
-                tnpRoot.histFitterAltBkg(  sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParAltBkgFit )
+            if args.doublePeak:                 
+                if args.altSig:                 
+                    tnpRoot.histFitterDoublePeakAltSig(  sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParDoublePeakAltSigFit )
+                elif args.altBkg:
+                    tnpRoot.histFitterDoublePeakAltBkg(  sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParDoublePeakAltBkgFit )
+                else:
+                    tnpRoot.histFitterDoublePeakNominal( sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParDoublePeakNomFit )
             else:
-                tnpRoot.histFitterNominal( sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParNomFit )
+                if args.altSig:                 
+                    tnpRoot.histFitterAltSig(  sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParAltSigFit )
+                elif args.altBkg:
+                    tnpRoot.histFitterAltBkg(  sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParAltBkgFit )
+                else:
+                    tnpRoot.histFitterNominal( sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParNomFit )
 
     args.doPlot = True
      
@@ -158,7 +168,7 @@ if  args.doPlot:
         fileName = sampleToFit.altBkgFit
         fitType  = 'altBkgFit'
         
-    plottingDir = '%s/plots/%s/%s' % (outputDirectory,sampleToFit.name,fitType)
+    plottingDir = '%s/plots/%s/%s' % (outputDirectory,sampleToFit.name,"doublePeak"+fitType if args.doublePeak else fitType)
     if not os.path.exists( plottingDir ):
         os.makedirs( plottingDir )
     shutil.copy('etc/inputs/index.php.listPlots','%s/index.php' % plottingDir)
