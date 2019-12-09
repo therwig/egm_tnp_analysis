@@ -240,3 +240,50 @@ def histFitterAltBkg( sample, tnpBin, tnpWorkspaceParam ):
     rootfile.Close()
 
 
+
+########## double peak fitter, no MC template used ##########
+
+#############################################################
+########## nominal double peak fitter                        # https://github.com/CERN-PH-CMG/cmgtools-lite/blob/94X_dev/ObjectStudies/python/scripts/leptonTnP/tnpEfficiency.py#L44
+#############################################################
+def histFitterDoublePeakNominal( sample, tnpBin, tnpWorkspaceParam ):
+        
+    tnpWorkspaceFunc = [
+        "Voigtian::sigResPass1(x, meanP1, width, sigmaP1)",
+        "Voigtian::sigResPass2(x, meanP2, width, prod::sigmaP2(sigmaP1, sigmaPRatio))",
+        "Voigtian::sigResFail1(x, meanF1, width, sigmaF1)",
+        "Voigtian::sigResFail2(x, meanF2, width, prod::sigmaF2(sigmaF1, sigmaFRatio))",
+        "RooCMSShape::bkgPass(x, acmsP, betaP, gammaP, peakP)",
+        "RooCMSShape::bkgFail(x, acmsF, betaF, gammaF, peakF)",
+        ]
+
+    tnpWorkspace = []
+    tnpWorkspace.extend(tnpWorkspaceParam)
+    tnpWorkspace.extend(tnpWorkspaceFunc)
+    
+    ## init fitter
+    infile = rt.TFile( sample.histFile, "read")
+    hP = infile.Get('%s_Pass' % tnpBin['name'] )
+    hF = infile.Get('%s_Fail' % tnpBin['name'] )
+    fitter = tnpFitter( hP, hF, tnpBin['name'] )
+    infile.Close()
+
+    ## setup
+    fitter.useMinos()
+    rootfile = rt.TFile(sample.nominalFit,'update')
+    fitter.setOutputFile( rootfile )
+    
+    ### set workspace
+    workspace = rt.vector("string")()
+    for iw in tnpWorkspace:
+        workspace.push_back(iw)
+    fitter.setWorkspace( workspace, bool(1) )
+
+    title = tnpBin['title'].replace(';',' - ')
+    title = title.replace('probe_sc_eta','#eta_{SC}')
+    title = title.replace('probe_Ele_pt','p_{T}')
+    fitter.fits(sample.mcTruth,title)
+    rootfile.Close()
+
+
+
