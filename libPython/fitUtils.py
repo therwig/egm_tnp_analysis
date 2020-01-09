@@ -122,7 +122,7 @@ def histFitterNominal( sample, tnpBin, tnpWorkspaceParam ):
     workspace = rt.vector("string")()
     for iw in tnpWorkspace:
         workspace.push_back(iw)
-    fitter.setWorkspace( workspace )
+    fitter.setWorkspace( workspace, 0 )
 
     title = tnpBin['title'].replace(';',' - ')
     title = title.replace('probe_sc_eta','#eta_{SC}')
@@ -177,7 +177,7 @@ def histFitterAltSig( sample, tnpBin, tnpWorkspaceParam ):
     workspace = rt.vector("string")()
     for iw in tnpWorkspace:
         workspace.push_back(iw)
-    fitter.setWorkspace( workspace )
+    fitter.setWorkspace( workspace, 0 )
 
     title = tnpBin['title'].replace(';',' - ')
     title = title.replace('probe_sc_eta','#eta_{SC}')
@@ -231,7 +231,7 @@ def histFitterAltBkg( sample, tnpBin, tnpWorkspaceParam ):
     workspace = rt.vector("string")()
     for iw in tnpWorkspace:
         workspace.push_back(iw)
-    fitter.setWorkspace( workspace )
+    fitter.setWorkspace( workspace, 0 )
 
     title = tnpBin['title'].replace(';',' - ')
     title = title.replace('probe_sc_eta','#eta_{SC}')
