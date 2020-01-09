@@ -1,6 +1,6 @@
 from libPython.tnpClassUtils import tnpSample
 
-eosSOSElectron2018 = "/eos/cms/store/user/evourlio/SOS_TnP_Electron_191101/2018/"
+eosSOSElectron2018 = "/eos/cms/store/user/evourlio/SOS_TnP_Electron_191209/2018/"
 
 SOS_Electron_2018 = {
     "DY"   : tnpSample("DY"     , eosSOSElectron2018 + "DYJetsToLL_M50_LO/DYJetsToLL_M50_LO.root"                   , isMC = True, nEvts =  -1 ),
