@@ -133,25 +133,22 @@ for s in tnpConf.samplesDef.keys():
 ### change the sample to fit is mc fit
 if args.mcSig :
     sampleToFit = tnpConf.samplesDef['mcNom']
+    print 'changing to mc'
 
 if  args.doFit:
     sampleToFit.dump()
     for ib in range(len(tnpBins['bins'])):
         if (args.binNumber >= 0 and ib == args.binNumber) or args.binNumber < 0:
-            if args.doublePeak:                 
-                if args.altSig:                 
-                    tnpRoot.histFitterDoublePeakAltSig(  sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParDoublePeakAltSigFit )
-                elif args.altBkg:
-                    tnpRoot.histFitterDoublePeakAltBkg(  sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParDoublePeakAltBkgFit )
-                else:
-                    tnpRoot.histFitterDoublePeakNominal( sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParDoublePeakNomFit )
-            else:
-                if args.altSig:                 
-                    tnpRoot.histFitterAltSig(  sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParAltSigFit )
-                elif args.altBkg:
-                    tnpRoot.histFitterAltBkg(  sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParAltBkgFit )
-                else:
-                    tnpRoot.histFitterNominal( sampleToFit, tnpBins['bins'][ib], tnpConf.tnpParNomFit )
+            model = tnpConf.tnpModelNom
+            fit = sampleToFit.nominalFit
+            if args.altSig: 
+                model = tnpConf.tnpModelAltSig
+                fit = sampleToFit.altSigFit
+            if args.altBkg: 
+                model = tnpConf.tnpModelAltBkg
+                fit = sampleToFit.altBkgFit
+            print 'input fit',fit
+            tnpRoot.histFitterGen( sampleToFit, tnpBins['bins'][ib], model, fit )
 
     args.doPlot = True
      

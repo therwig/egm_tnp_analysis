@@ -13,6 +13,7 @@
 /// include pdfs
 #include "RooCBExGaussShape.h"
 #include "RooCMSShape.h"
+#include "RooExponentialN.h"
 
 #include <vector>
 #include <string>
@@ -118,8 +119,6 @@ void tnpFitter::setWorkspace(std::vector<std::string> workspace, bool useNoMCTem
   if(useNoMCTemplate) _useNoMCTemplate = true;
 
   if( _useNoMCTemplate ) {
-	  _work->factory("SUM::sigPass(vFracPass[0.8,0.3,1]*sigResPass1, sigResPass2)");
-	  _work->factory("SUM::sigFail(vFracFail[0.8,0.3,1]*sigResFail1, sigResFail2)");
 	  _work->factory(TString::Format("nSigP[%f,0.5,%f]",_nTotP*0.9,_nTotP*1.5));
 	  _work->factory(TString::Format("nBkgP[%f,0.5,%f]",_nTotP*0.1,_nTotP*1.5));
 	  _work->factory(TString::Format("nSigF[%f,0.5,%f]",_nTotF*0.9,_nTotF*1.5));

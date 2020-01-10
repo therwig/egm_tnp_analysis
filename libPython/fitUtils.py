@@ -2,6 +2,7 @@ import ROOT as rt
 rt.gROOT.LoadMacro('./libCpp/histFitter.C+')
 rt.gROOT.LoadMacro('./libCpp/RooCBExGaussShape.cc+')
 rt.gROOT.LoadMacro('./libCpp/RooCMSShape.cc+')
+rt.gROOT.LoadMacro('./libCpp/RooExponentialN.cc+')
 rt.gROOT.SetBatch(1)
 
 from ROOT import tnpFitter
@@ -76,6 +77,41 @@ def createWorkspaceForAltSig( sample, tnpBin, tnpWorkspaceParam ):
     filemc.Close()
 
     return tnpWorkspaceParam
+
+
+#############################################################
+########## general fitter
+#############################################################
+def histFitterGen( sample, tnpBin, tnpModel, fitfile ):
+
+    tnpWorkspace = []
+    tnpWorkspace.extend(tnpModel.GetParams())
+    tnpWorkspace.extend(tnpModel.GetFunc())
+    
+    ## init fitter
+    infile = rt.TFile( sample.histFile, "read")
+    hP = infile.Get('%s_Pass' % tnpBin['name'] )
+    hF = infile.Get('%s_Fail' % tnpBin['name'] )
+    fitter = tnpFitter( hP, hF, tnpBin['name'] )
+    infile.Close()
+
+    ## setup
+    fitter.useMinos()
+    print 'saving to fitfile',fitfile
+    rootfile = rt.TFile(fitfile,'update')
+    fitter.setOutputFile( rootfile )
+    
+    ### set workspace
+    workspace = rt.vector("string")()
+    for iw in tnpWorkspace:
+        workspace.push_back(iw)
+    fitter.setWorkspace( workspace, bool(1) )
+
+    title = tnpBin['title'].replace(';',' - ')
+    title = title.replace('probe_sc_eta','#eta_{SC}')
+    title = title.replace('probe_Ele_pt','p_{T}')
+    fitter.fits(sample.mcTruth,title)
+    rootfile.Close()
 
 
 #############################################################
@@ -291,7 +327,7 @@ def histFitterDoublePeakNominal( sample, tnpBin, tnpWorkspaceParam ):
 ########## alternate signal double peak fitter
 #############################################################
 def histFitterDoublePeakAltSig( sample, tnpBin, tnpWorkspaceParam ):
-        
+
     tnpWorkspaceFunc = [
         "Gaussian::sigResPass1(x,meanP1,sigmaP1)",
         "Gaussian::sigResPass2(x,meanP2,sigmaP2)",
