@@ -139,15 +139,24 @@ if  args.doFit:
     sampleToFit.dump()
     for ib in range(len(tnpBins['bins'])):
         if (args.binNumber >= 0 and ib == args.binNumber) or args.binNumber < 0:
-            model = tnpConf.tnpModelNom
-            fit = sampleToFit.nominalFit
-            if args.altSig: 
-                model = tnpConf.tnpModelAltSig
-                fit = sampleToFit.altSigFit
-            if args.altBkg: 
-                model = tnpConf.tnpModelAltBkg
-                fit = sampleToFit.altBkgFit
-            print 'input fit',fit
+            if args.mcSig: 
+                model = tnpConf.tnpModelsNom.GetMC(ib)
+                fit = sampleToFit.nominalFit
+                if args.altSig:
+                    model = tnpConf.tnpModelsAltSig.GetMC(ib)
+                    fit = sampleToFit.altSigFit
+                if args.altBkg: 
+                    model = tnpConf.tnpModelsAltBkg.GetMC(ib)
+                    fit = sampleToFit.altBkgFit
+            else: 
+                model = tnpConf.tnpModelsNom.GetData(ib)
+                fit = sampleToFit.nominalFit
+                if args.altSig:
+                    model = tnpConf.tnpModelsAltSig.GetData(ib)
+                    fit = sampleToFit.altSigFit
+                if args.altBkg: 
+                    model = tnpConf.tnpModelsAltBkg.GetData(ib)
+                    fit = sampleToFit.altBkgFit
             tnpRoot.histFitterGen( sampleToFit, tnpBins['bins'][ib], model, fit )
 
     args.doPlot = True
