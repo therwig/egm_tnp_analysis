@@ -101,8 +101,17 @@ tnpModelsAltBkg.GetData(01).UpdateParams({"SFsigmaRatio":(1,),"SFmean1":(90,88,9
 # the following  works, but prefering the bernstein as more of a variation?
 # tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,),"SFmean1":(90,),"SFmean2":(90,)})
 tnpModelsAltBkg.models_data[0] = DoubleVoigt()
-tnpModelsAltBkg.models_data[0].AddModel( BernsteinN(3) )
-tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,),"SFmean1":(90,),"SFmean2":(90,)})
+tnpModelsAltBkg.models_data[0].AddModel( BernsteinN(5) )
+tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,0.5,2),"SFmean1":(90,88,92),"SFmean2":(90,88,92)})
+
+#tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,0.5,2),"SFmean1":(91,),"SFmean2":(91,)})
+#tnpModelsAltBkg.models_data[0].AddModel( BernsteinN(3) )
+#tnpModelsAltBkg.models_data[0].AddModel( BernsteinN(5) )
+#tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,),"SFmean1":(90,),"SFmean2":(90,)})
+#tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,),"SFmean1":(89,),"SFmean2":(89,)})
+#tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,0.5,2),"SFmean1":(91,),"SFmean2":(91,)})
+tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,0.5,2),"SFmean1":(90,88,92),"SFmean2":(90,88,92)})
+#tnpModelsAltBkg.GetData(00).SetFFitRange(65,120)
 
 
 #
