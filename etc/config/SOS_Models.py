@@ -179,3 +179,17 @@ class ExponentialN(Model):
             self.params["BPa{}".format(i)] = (0,-5,5)
             self.params["BFa{}".format(i)] = (0,-5,5)
         print(self.func)
+
+class BernsteinN(Model):
+    '''Exp of an n-dim polynomial '''
+    def __init__(self,n):
+        super(BernsteinN,self).__init__()
+        self.n=n
+        self.func=[
+            "RooBernstein::bkgPass(x,{"+",".join(["BPa{}".format(i) for i in range(n)])+"})",
+            "RooBernstein::bkgFail(x,{"+",".join(["BFa{}".format(i) for i in range(n)])+"})"
+        ]
+        self.params={}
+        for i in range(n):
+            self.params["BPa{}".format(i)] = (0.5,0,1)
+            self.params["BFa{}".format(i)] = (0.5,0,1)

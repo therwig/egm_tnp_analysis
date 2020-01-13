@@ -101,6 +101,9 @@ def histFitterGen( sample, tnpBin, tnpModel, fitfile ):
     rootfile = rt.TFile(fitfile,'update')
     fitter.setOutputFile( rootfile )
     
+    if len(tnpModel.GetFFitRange()):
+        fitter.setFitRange(*tnpModel.GetFFitRange())
+    
     ### set workspace
     workspace = rt.vector("string")()
     for iw in tnpWorkspace:
