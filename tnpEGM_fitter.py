@@ -135,7 +135,7 @@ if args.mcSig :
     sampleToFit = tnpConf.samplesDef['mcNom']
     print 'changing to mc'
 
-if  args.doFit:
+if args.doFit:
     sampleToFit.dump()
     for ib in range(len(tnpBins['bins'])):
         if (args.binNumber >= 0 and ib == args.binNumber) or args.binNumber < 0:

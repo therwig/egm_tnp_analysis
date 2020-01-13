@@ -25,10 +25,12 @@ class ModelSet(object):
             self.models_data[-1].AddModel(mod_bkg_data())
             self.models_mc.append(mod_sig_mc())
             self.models_mc[-1].AddModel(mod_bkg_mc())
-    def UpdateDataModel(self,i,mod):
-        self.models_data[i] = mod()
-    def UpdateMCModel(self,i,mod):
-        self.models_mc[i] = mod()
+    def UpdateDataModel(self,i,mod_s,mod_b):
+        self.models_data[i] = mod_s
+        self.models_data[i].AddModel( mod_b )
+    def UpdateMCModel(self,i,mod_s,mod_b):
+        self.models_mc[i] = mod_s
+        self.models_mc[i].AddModel( mod_b )
     def GetData(self,i):
         return self.models_data[i]
     def GetMC(self,i):
