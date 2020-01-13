@@ -32,7 +32,7 @@ class ModelSet(object):
     def GetData(self,i):
         return self.models_data[i]
     def GetMC(self,i):
-        return self.models_data[i]
+        return self.models_mc[i]
     def AddModelSet(self,ms): #e.g. for composing s+b models
         if (len(ms.models_data) != len(self.models_data)) \
            or (len(ms.models_mc) != len(self.models_mc)):
@@ -51,9 +51,9 @@ class Model(object):
     def GetParams(self):
         return ["{}{}".format(x,list(self.params[x])) for x in self.params]
     def GetFunc(self): return self.func
-    def SetFFitRange(self,a,b): 
+    def SetFitRange(self,a,b): 
         self.fit_range=(a,b)
-    def GetFFitRange(self): 
+    def GetFitRange(self): 
         return self.fit_range
     def AddModel(self,m):
         add_func = m.func

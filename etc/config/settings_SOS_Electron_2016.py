@@ -80,15 +80,18 @@ tnpModelsAltBkg = ModelSet(nbins,DoubleVoigt,Exponential,DoubleVoigt,Exponential
 
 # Nominal Data (switch to plain exponential bkg for lowest 2 bins)
 tnpModelsNom.GetData(00).UpdateParams({"BFacms":(10,),"BFbeta":(1,),})
-tnpModelsNom.GetData(01).SetFFitRange(70,110)
+tnpModelsNom.GetData(01).SetFitRange(70,110)
 tnpModelsNom.GetData(01).UpdateParams({"BFacms":(10,),"BFbeta":(1,),}) 
 tnpModelsNom.GetData(02).UpdateParams({"BFacms":(10,),"BFbeta":(1,),})
 tnpModelsNom.GetData(03).UpdateParams({"BFacms":(10,),"BFbeta":(1,), "SPsigma":(1.,0.5,5.0), "SPwidth":(1.,),}) #good
 tnpModelsNom.GetData(04).UpdateParams({"BFacms":(80,), "BFbeta":(0.02,), "BFgamma":(0.059,),"SFsigmaRatio":(1,),"SFmean2":(90,88,92)})
-tnpModelsNom.GetData(07).UpdateParams({"SPwidth":(2.5,0.5,3.0), "SPsigma1":(1.0,0.5,5)})
+#tnpModelsNom.GetData(07).UpdateParams({"SPwidth":(2.5,0.5,3.0), "SPsigma1":(1.0,0.5,5)})
+
+#tnpModelsNom.GetData(07).UpdateParams({"SPwidth":(2.5,0.5,3.0), "SPsigma1":(1.0,0.5,5)})
+#tnpModelsNom.GetData(07).UpdateParams({"SFmean1":(90,88,92),"SFmean2":(90,88,92)})
 
 # Alternate Signal -- Data
-tnpModelsAltSig.GetData(01).SetFFitRange(70,110)
+tnpModelsAltSig.GetData(01).SetFitRange(70,110)
 tnpModelsAltSig.GetData(01).UpdateParams({"BFacms":(10,),"BFbeta":(1,),}) 
 
 # Alternate Background -- Data (exponential doesn't seem to fit well, use bernstein instead )
@@ -107,20 +110,35 @@ tnpModelsAltBkg.models_data[0] = DoubleVoigt()
 tnpModelsAltBkg.models_data[0].AddModel( BernsteinN(5) )
 tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,0.5,2),"SFmean1":(90,88,92),"SFmean2":(90,88,92)})
 
-#tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,0.5,2),"SFmean1":(91,),"SFmean2":(91,)})
-#tnpModelsAltBkg.models_data[0].AddModel( BernsteinN(3) )
-#tnpModelsAltBkg.models_data[0].AddModel( BernsteinN(5) )
-#tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,),"SFmean1":(90,),"SFmean2":(90,)})
-#tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,),"SFmean1":(89,),"SFmean2":(89,)})
-#tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,0.5,2),"SFmean1":(91,),"SFmean2":(91,)})
-tnpModelsAltBkg.GetData(00).UpdateParams({"SFsigmaRatio":(1,0.5,2),"SFmean1":(90,88,92),"SFmean2":(90,88,92)})
-#tnpModelsAltBkg.GetData(00).SetFFitRange(65,120)
+tnpModelsAltBkg.models_data[6] = DoubleVoigt()
+tnpModelsAltBkg.models_data[6].AddModel( BernsteinN(4) )
+tnpModelsAltBkg.GetData(06).UpdateParams({"SFmean1":(90,86,92),"SFmean2":(90,86,92)})
 
+tnpModelsAltBkg.models_data[7] = DoubleVoigt()
+tnpModelsAltBkg.models_data[7].AddModel( BernsteinN(5) )
+tnpModelsAltBkg.GetData(07).UpdateParams({"SFmean1":(90,88,92),"SFmean2":(90,88,92)})
+
+# Nominal fit with MC
+tnpModelsNom.GetMC(00).UpdateParams({"SPmean2":(90,20,100),"SFmean2":(90,20,100),"SPsigma1":(1,0.5,5),"SFsigma1":(1,0.5,5),})
+tnpModelsNom.GetMC(01).UpdateParams({"SPmean2":(90,20,100),"SFmean2":(90,20,100),"SPsigma1":(1,0.5,5),"SFsigma1":(1,0.5,5),})
+tnpModelsNom.GetMC(02).UpdateParams({"SPmean2":(90,20,100),"SFmean2":(90,20,100),"SPsigma1":(1,0.5,5),"SFsigma1":(1,0.5,5),"SPwidth":(1,0.5,3)})
+tnpModelsNom.GetMC(03).UpdateParams({"SPmean2":(90,20,100),"SFmean2":(90,20,100),"SPsigma1":(1,0.5,5),"SFsigma1":(1,0.5,5),})
+tnpModelsNom.GetMC(04).UpdateParams({"SPmean2":(90,20,100),"SFmean2":(90,20,100),"SPsigma1":(1,0.5,5),"SFsigma1":(1,0.5,5),})
+tnpModelsNom.GetMC(05).UpdateParams({"SPmean2":(90,20,100),"SFmean2":(90,20,100),"SPsigma1":(1,0.5,5),"SFsigma1":(1,0.5,5),})
+
+#     "meanP1":(90,80,100), "width":(3.0), "sigmaP1":(1.0,0.5,2.5), "meanP2":(90,20,100), "sigmaPRatio":(4,1.5,10),
+#     "meanF1":(95,90,100), "width":(3.0), "sigmaF1":(4.0,2.0,4.5), "meanF2":(75,74,85), "sigmaFRatio":(9,7.5,10),})
+# tnpModelsNom.GetMC(01).UpdateParams({
+#     "meanP1":(90,80,100), "width":(3.0), "sigmaP1":(1.0,0.5,3.5), "meanP2":(90,20,100), "sigmaPRatio":(4,1.5,10),
+#     "meanF1":(90,80,100), "width":(3.0), "sigmaF1":(1.0,0.5,4.5), "meanF2":(90,20,100), "sigmaFRatio":(4,1.5,10),})
+# tnpModelsNom.GetMC(02).UpdateParams({
+#     "meanP1":(90,80,100), "width":(3.0), "sigmaP1":(1.0,0.5,2.8), "meanP2":(90,20,100), "sigmaPRatio":(4,1.5,10),
+#     "meanF1":(90,90,100), "width":(3.0), "sigmaF1":(1.0,0.5,2.5), "meanF2":(60,50,75), "sigmaFRatio":(8,7.5,10),})
 
 #
 # The above are all fit with the following 'default' parameters
 #
-# Voigt defaults
+# Double-Voigt defaults
 # "SPmean1":(90,80,100), "SPsigma1":(1.0,0.5,2.5), "SPwidth":(2.5,2.0,3.0),
 # "SFmean1":(90,80,100), "SFsigma1":(1.0,0.5,2.5),
 # "SPmean2":(90,80,100), "SPsigmaRatio":(4,1.5,10),

@@ -2,5 +2,6 @@
 *.d
 *.so
 *.pcm
+*~
 libPython/build/
 results
