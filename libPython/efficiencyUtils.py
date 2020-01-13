@@ -236,6 +236,9 @@ class efficiencyList:
         print 'Entering the function...'
 #        self.symmetrizeSystVsEta()
         self.combineSyst()
+        print 'combined...'
+
+        print self.effList.keys()
 
         ### first define bining
         xbins = []
@@ -252,36 +255,44 @@ class efficiencyList:
                 if not etaBin[1] in xbins:
                     xbins.append(etaBin[1])
 
+        print 'getefflistkeys'
         xbins.sort()
         ybins.sort()
+        print xbins
+        print ybins
         ## transform to numpy array for ROOT
         #xbinsTab = np.array(xbins)
         #ybinsTab = np.array(ybins)
         xbinsTab = array('f',xbins)
         ybinsTab = array('f',ybins)
-
+        print xbinsTab
+        print ybinsTab
+        
+        print 'getefflistkeys2'
         htitle = '#mu scale factors'
         hname  = 'h2_scaleFactorsMuon' 
         if onlyError >= 0:
             htitle = '#mu uncertainties'
             hname  = 'h2_uncertaintiesMuon'             
+        print 'h0'
 
         #import os
-        #print 'hname = ', hname
-        #print 'htitle = ', htitle
-        #print 'xbinsTab.size-1 = ', xbinsTab.size-1
-        #print 'xbinsTab = ', xbinsTab
-        #print 'ybinsTab.size-1 = ', ybinsTab.size-1
-        #print 'ybinsTab = ', ybinsTab
+        print 'hname = ', hname
+        print 'htitle = ', htitle
+        print 'xbinsTab.size-1 = ', len(xbinsTab)
+        print 'xbinsTab = ', xbinsTab
+        print 'ybinsTab.size-1 = ', len(ybinsTab)
+        print 'ybinsTab = ', ybinsTab
         #h2dd = rt.TH2F(hname,htitle,xbinsTab.size-1,xbinsTab,ybinsTab.size-1,ybinsTab)
         h2 = rt.TH2F(hname,htitle,len(xbinsTab)-1,xbinsTab,len(ybinsTab)-1,ybinsTab)
-
+        print 'h'
         ## init histogram efficiencies and errors to 100%
         for ix in range(1,h2.GetXaxis().GetNbins()+1):
             for iy in range(1,h2.GetYaxis().GetNbins()+1):
                 h2.SetBinContent(ix,iy, 1)
                 h2.SetBinError  (ix,iy, 1)
         
+        print 'loop'
         for ix in range(1,h2.GetXaxis().GetNbins()+1):
             for iy in range(1,h2.GetYaxis().GetNbins()+1):
 
@@ -332,6 +343,7 @@ class efficiencyList:
 
         h2.GetXaxis().SetTitle("|#eta|")
         h2.GetYaxis().SetTitle("p_{T} [GeV]")
+        print 'ret'
         return h2
         
                                 

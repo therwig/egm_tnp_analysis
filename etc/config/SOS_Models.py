@@ -6,20 +6,34 @@ class ModelSet(object):
     def __init__(self):
         self.models_data = []
         self.models_mc   = []
-    def __init__(self,mtype,n):
+    def __init__(self, n, mtype):
         self.models_data = [mtype() for i in range(n)]
         self.models_mc   = [mtype() for i in range(n)]
+    def __init__(self, n, mod_sig, mod_bkg):
+        self.models_data = []
+        self.models_mc   = []
+        for i in range(n):
+            self.models_data.append(mod_sig())
+            self.models_data[-1].AddModel(mod_bkg())
+            self.models_mc.append(mod_sig())
+            self.models_mc[-1].AddModel(mod_bkg())
+    def __init__(self, n, mod_sig_data, mod_bkg_data, mod_sig_mc, mod_bkg_mc):
+        self.models_data = []
+        self.models_mc   = []
+        for i in range(n):
+            self.models_data.append(mod_sig_data())
+            self.models_data[-1].AddModel(mod_bkg_data())
+            self.models_mc.append(mod_sig_mc())
+            self.models_mc[-1].AddModel(mod_bkg_mc())
+    def UpdateDataModel(self,i,mod):
+        self.models_data[i] = mod()
+    def UpdateMCModel(self,i,mod):
+        self.models_mc[i] = mod()
     def GetData(self,i):
-        if i>=len(self.models_data):
-            print("Model out of bounds")
-            return None
         return self.models_data[i]
     def GetMC(self,i):
-        if i>=len(self.models_mc):
-            print("Model out of bounds")
-            return None
         return self.models_data[i]
-    def AddModelSet(self,ms):
+    def AddModelSet(self,ms): #e.g. for composing s+b models
         if (len(ms.models_data) != len(self.models_data)) \
            or (len(ms.models_mc) != len(self.models_mc)):
             print("Model set dimensions don't match")

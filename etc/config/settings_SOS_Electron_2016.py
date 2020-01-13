@@ -68,12 +68,15 @@ additionalCuts = {}
 from etc.config.SOS_Models import *
 nbins=(len(biningDef[0]['bins'])-1)*(len(biningDef[1]['bins'])-1)
 
-tnpModelsNom = ModelSet(DoubleVoigt,nbins)
-tnpModelsNom.AddModelSet( ModelSet(CMSShape,nbins) )
-tnpModelsAltSig = ModelSet(DoubleGaussian,nbins)
-tnpModelsAltSig.AddModelSet( ModelSet(CMSShape,nbins) )
-tnpModelsAltBkg = ModelSet(DoubleVoigt,nbins)
-tnpModelsAltBkg.AddModelSet( ModelSet(Exponential,nbins) )
+# tnpModelsNom = ModelSet(DoubleVoigt,nbins)
+# tnpModelsNom.AddModelSet( ModelSet(CMSShape,nbins) )
+# tnpModelsAltSig = ModelSet(DoubleGaussian,nbins)
+# tnpModelsAltSig.AddModelSet( ModelSet(CMSShape,nbins) )
+# tnpModelsAltBkg = ModelSet(DoubleVoigt,nbins)
+# tnpModelsAltBkg.AddModelSet( ModelSet(Exponential,nbins) )
+tnpModelsNom    = ModelSet(nbins,DoubleVoigt,CMSShape, DoubleVoigt,CMSShape)
+tnpModelsAltSig = ModelSet(nbins,DoubleGaussian,CMSShape,DoubleGaussian,CMSShape)
+tnpModelsAltBkg = ModelSet(nbins,DoubleVoigt,Exponential,DoubleVoigt,Exponential)
 
 # Nominal Data (switch to plain exponential bkg for lowest 2 bins)
 tnpModelsNom.GetData(00).UpdateParams({"BFacms":(10,),"BFbeta":(1,),})
