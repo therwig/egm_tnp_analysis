@@ -64,7 +64,6 @@ additionalCuts = {}
 #############################################################
 ########## fitting params to tune fit by hand if necessary
 #############################################################
-#import etc.config.SOS_Models as tnpModels
 from etc.config.SOS_Models import *
 nbins=(len(biningDef[0]['bins'])-1)*(len(biningDef[1]['bins'])-1)
 
@@ -96,10 +95,7 @@ tnpModelsAltBkg.GetData(3).UpdateParams({"SFsigmaRatio":(1,),"SFmean1":(88,86,92
 tnpModelsAltBkg.UpdateDataModel(4, DoubleVoigt(), BernsteinN(3))
 tnpModelsAltBkg.UpdateDataModel(6, DoubleVoigt(), BernsteinN(4))
 tnpModelsAltBkg.GetData(06).UpdateParams({"SFmean1":(90,86,92),"SFmean2":(90,86,92)})
-
 tnpModelsAltBkg.UpdateDataModel(7, DoubleVoigt(), BernsteinN(5))
-# tnpModelsAltBkg.models_data[7] = DoubleVoigt()
-# tnpModelsAltBkg.models_data[7].AddModel( BernsteinN(5) )
 tnpModelsAltBkg.GetData(07).UpdateParams({"SFmean1":(90,88,92),"SFmean2":(90,88,92)})
 
 # Nominal fit with MC
